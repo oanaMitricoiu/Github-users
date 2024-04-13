@@ -8,6 +8,7 @@ import {
     CLEAR_USERS,
     GET_USER,
     GET_REPOS,
+    GET_USERS,
 } from "../types";
 
 const GithubState = (props) => {
@@ -19,6 +20,25 @@ const GithubState = (props) => {
     };
 
     const [state, dispatch] = useReducer(githubReducer, initialState);
+
+    //Get users
+
+    const getUsers = async () => {
+        setLoading();
+        const fetchUsers = async () => {
+            const data = await axios.get(
+                `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+            );
+            return data.data;
+        };
+
+        const _users = await fetchUsers();
+
+        dispatch({
+            type: GET_USERS,
+            payload: _users,
+        });
+    };
 
     //Search Users
 
@@ -83,6 +103,7 @@ const GithubState = (props) => {
                 clearUsers,
                 getUser,
                 getUserRepos,
+                getUsers,
             }}
         >
             {props.children}
