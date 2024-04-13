@@ -5,13 +5,6 @@ import Spinner from "./../layout/Spinner";
 import Repos from "../repos/Repos";
 import GithubContext from "../../context/github/githubContext";
 
-// export function withRouter(Children) {
-//     return (props) => {
-//         const match = { params: useParams() };
-//         return <Children {...props} match={match} />;
-//     };
-// }
-
 const User = () => {
     const githubContext = useContext(GithubContext);
     const match = useParams();
