@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./components/layout/Navbar";
-import Users from "./components/users/Users";
-import Search from "./components/users/Search";
 import Alert from "./components/layout/Alert";
 import About from "./components/pages/About";
 import User from "./components/users/User";
@@ -9,9 +7,11 @@ import "./App.css";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GithubState from "./context/github/GithubState";
+import AlertState from "./context/alert/AlertState";
+import Home from "./components/pages/Home";
+import NotFound from "./components/pages/NotFound";
 
 const App = (props) => {
-    const [alert, setAlert] = useState(null);
     // const [users, setUsers] = useState([]);
 
     // const getUsers = async () => {
@@ -32,40 +32,29 @@ const App = (props) => {
     // }, []);
 
     //Set alert
-    const showAlert = (msg, type) => {
-        setAlert({ msg, type });
-        setTimeout(() => {
-            setAlert(null);
-        }, 3000);
-    };
 
     return (
         <GithubState>
-            <Router>
-                <div className="App">
-                    <Navbar />
-                    <div className="container">
-                        <Alert alert={alert} />
+            <AlertState>
+                <Router>
+                    <div className="App">
+                        <Navbar />
+                        <div className="container">
+                            <Alert />
 
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={
-                                    <>
-                                        <Search setAlert={showAlert} />
-                                        <Users />
-                                    </>
-                                }
-                            />
-                            <Route path="/about" element={<About />} />
-                            <Route
-                                path="/user/:login"
-                                element={<User {...props} />}
-                            />
-                        </Routes>
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/about" element={<About />} />
+                                <Route
+                                    path="/user/:login"
+                                    element={<User {...props} />}
+                                />
+                                <Route path="*" element={<NotFound />} />
+                            </Routes>
+                        </div>
                     </div>
-                </div>
-            </Router>
+                </Router>
+            </AlertState>
         </GithubState>
     );
 };
